@@ -110,9 +110,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(meme)
-        
-        print(appDelegate.memes.count)
-        
+
         let vc = UIActivityViewController(activityItems:[meme], applicationActivities: nil)
         present(vc, animated: true)
         
@@ -128,22 +126,21 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
                 print("error while sharing: \(shareError.localizedDescription)")
             }
         }
-        
     }
-    
     
     @IBAction func cancel() {
         initialState()
         dismiss(animated: true)
     }
     
-    func initialState(){
+    func initialState() {
         imageView.image = nil
         topTextField.text = "TOP"
         bottomTextField.text = "BOTTOM"
         self.cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
         self.shareButton.isEnabled = false
     }
+    
     func generateMemedImage() -> UIImage {
         self.topToolBar.isHidden = true
         self.bottomToolBar.isHidden = true

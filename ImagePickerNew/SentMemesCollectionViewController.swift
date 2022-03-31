@@ -9,19 +9,23 @@ import UIKit
 
 class SentMemesCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    @IBOutlet var collectionView: UICollectionView!
+    
     var memes: [Meme]! {
         let object = UIApplication.shared.delegate
         let appDelegate = object as! AppDelegate
         return appDelegate.memes
     }
     
-    
-    override func viewDidAppear(_ animated: Bool) {
-        print("collection appear \(self.memes.count)")
+    override func viewDidLoad() {
+        let width = (view.frame.width-20)/3
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout
+        layout.itemSize = CGSize(width: width, height: width)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
-        //collectionView?.reloadData()
+        self.navigationController?.navigationBar.isHidden = true
+        collectionView?.reloadData()
     }
      
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -32,9 +36,14 @@ class SentMemesCollectionViewController: UIViewController, UICollectionViewDeleg
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MemeCollectionViewCell", for: indexPath) as! MemeCollectionViewCell
         let memeRow = self.memes[(indexPath as NSIndexPath).row]
-    
         cell.memeImageView?.image = memeRow.memedImage
         
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let detailController = storyboard?.instantiateViewController(withIdentifier: "MemeDetailViewControler") as! MemeDetailViewControler
+        detailController.memeImage = self.memes[indexPath.row].memedImage
+        navigationController?.pushViewController(detailController, animated: true)
     }
 }
