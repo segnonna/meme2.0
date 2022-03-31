@@ -76,7 +76,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
     
     @objc func keyboardWillShow(_ notification:Notification) {
         if bottomTextField.isFirstResponder{
-            view.frame.origin.y -= getKeyboardHeight(notification)
+            view.frame.origin.y = -getKeyboardHeight(notification)
         }
     }
     
@@ -111,7 +111,7 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
         let appDelegate = object as! AppDelegate
         appDelegate.memes.append(meme)
 
-        let vc = UIActivityViewController(activityItems:[meme], applicationActivities: nil)
+        let vc = UIActivityViewController(activityItems:[meme.memedImage], applicationActivities: nil)
         present(vc, animated: true)
         
         vc.completionWithItemsHandler = { (activityType: UIActivity.ActivityType?, completed:
@@ -120,10 +120,10 @@ class CreateMemeViewController: UIViewController, UIImagePickerControllerDelegat
                 self.dismiss(animated: true)
                 return
             } else {
-                print("cancel")
+                debugPrint("cancel")
             }
             if let shareError = error {
-                print("error while sharing: \(shareError.localizedDescription)")
+                debugPrint("error while sharing: \(shareError.localizedDescription)")
             }
         }
     }
